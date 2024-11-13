@@ -1,12 +1,18 @@
-import Image from "next/image";
+import PostCard from '../components/PostCard';
 
-export default function Home() {
+async function fetchPosts() {
+  const res = await fetch(`/api/posts`, { cache: 'no-store' });
+  return res.json();
+}
+
+export default async function HomePage() {
+  const posts = await fetchPosts();
+
   return (
     <div>
-      <h2 className="m-6 text-center font-bold text-purple-700 text-4xl">
-        Hello World
-      </h2>
-      <p className="text-indigo-700 text-center text-3xl">The Shivam Maurya is here.</p>
+      {posts.map((post) => (
+        <PostCard key={post._id} post={post} />
+      ))}
     </div>
   );
 }
